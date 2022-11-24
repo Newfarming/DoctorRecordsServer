@@ -811,7 +811,7 @@ class UploadImg(View):
                 'message': 'success',
                 'code': 20000,
                 'data': {
-                    'imgurl': '/DoctorRecordsServerApp/media/img/' + file.name,
+                    'imgurl': 'http://192.168.250.190/DoctorRecordsServerApp/media/img/' + file.name,
                 }
             }
         except:
