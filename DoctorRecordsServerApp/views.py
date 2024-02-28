@@ -15,7 +15,15 @@ from util.doctorRecords_db import insertUser, editUser, deleteUser, userList, in
     insertOutTable, insertStudyTable, insertObtainPatents, insertResearchPapers, insertProfessionalTitle, \
     newTechAwardList, \
     newTechResearchList, outTableList, obtainPatentsList, professionalTitleList, researchProjectList, researchAwardList, \
-    researchPapersList, studyTableList, doctorRelationshipDelete
+    researchPapersList, studyTableList, doctorRelationshipDelete,\
+    insert_shoushuzizhi,info_shoushuzizhi,info_chufang_changwaiyingyangzhiji,insert_chufang_changwaiyingyangzhiji,insert_chufang_kangjunyaowu,\
+    insert_chufang_mazuijingshen,insert_chufang_kangzhongliu,insert_chufang_yongxuezizhi,info_chufang_mazuijingshen,info_chufang_kangzhongliu,\
+    info_chufang_baogaoqianziquan,insert_chufang_baogaoqianziquan,info_chufang_kangjunyaowu,info_chufang_yongxuezizhi,\
+    info_chufang_pizhijisuleiyaowu,insert_chufang_pizhijisuleiyaowu,insert_chufang_putongchufangquan,info_chufang_putongchufangquan,\
+    insert_chufang_shengwuyuxueyezhiji,info_chufang_shengwuyuxueyezhiji,list_chufang_putongchufangquan,list_chufang_shengwuyuxueyezhiji,\
+    list_shoushuzizhi,list_chufang_kangjunyaowu,list_chufang_kangzhongliu,list_chufang_yongxuezizhi,\
+    list_chufang_baogaoqianziquan,list_chufang_mazuijingshen,list_chufang_changwaiyingyangzhiji,list_chufang_pizhijisuleiyaowu,\
+    insert_chufang_shouquan,list_chufang_shouquan
 from django.core import serializers
 from django.http import JsonResponse
 import jwt
@@ -106,6 +114,31 @@ def query_userinfo(request):
     if "prescription_Biological_and_blood_preparations" in rst_term:
         rst['prescription_Biological_and_blood_preparations'] = rst_term[
                                                                     "prescription_Biological_and_blood_preparations"] == '1'
+    # 肠外营养制剂
+    if "changwaiyingyangzhiji" in rst_term:
+        rst['changwaiyingyangzhiji'] = rst_term["changwaiyingyangzhiji"] == '1'
+    # 急诊用血
+    if "jizhenyongxue" in rst_term:
+        rst['jizhenyongxue'] = rst_term["jizhenyongxue"] == '1'
+    # 平诊用血
+    if "pingzhenyongxue" in rst_term:
+        rst['pingzhenyongxue'] = rst_term["pingzhenyongxue"] == '1'
+    # 用血量小于800
+    if "yongxueliangxiaoyu800" in rst_term:
+        rst['yongxueliangxiaoyu800'] = rst_term["yongxueliangxiaoyu800"] == '1'
+    # 用血量小于1600
+    if "yongxueliangxiaoyu1600" in rst_term:
+        rst['yongxueliangxiaoyu1600'] = rst_term["yongxueliangxiaoyu1600"] == '1'
+    # 检验报告
+    if "jianyanbaogao" in rst_term:
+        rst['jianyanbaogao'] = rst_term["jianyanbaogao"] == '1'
+    # 检查报告
+    if "jianchabaogao" in rst_term:
+        rst['jianchabaogao'] = rst_term["jianchabaogao"] == '1'
+    # 输血检验报告
+    if "shuxuejianyanbaogao" in rst_term:
+        rst['shuxuejianyanbaogao'] = rst_term["shuxuejianyanbaogao"] == '1'
+
     if "depart_id" in rst_term:
         rst['depart_id'] = rst_term["depart_id"]
     if "id" in rst_term:
@@ -128,6 +161,28 @@ def query_userinfo(request):
         rst['ResearchPapersList'] = rst_term["ResearchPapersList"]
     if "StudyTableList" in rst_term:
         rst['StudyTableList'] = rst_term["StudyTableList"]
+    if "shoushuzizhiList" in rst_term:
+        rst['shoushuzizhiList'] = rst_term["shoushuzizhiList"]
+    if "chufang_yongxuezizhiList" in rst_term:
+        rst['chufang_yongxuezizhiList'] = rst_term["chufang_yongxuezizhiList"]
+    if "chufang_kangjunyaowuList" in rst_term:
+        rst['chufang_kangjunyaowuList'] = rst_term["chufang_kangjunyaowuList"]
+    if "chufang_kangzhongliuList" in rst_term:
+        rst['chufang_kangzhongliuList'] = rst_term["chufang_kangzhongliuList"]
+    if "chufang_mazuijingshenList" in rst_term:
+        rst['chufang_mazuijingshenList'] = rst_term["chufang_mazuijingshenList"]
+    if "chufang_changwaiyingyangzhijiList" in rst_term:
+        rst['chufang_changwaiyingyangzhijiList'] = rst_term["chufang_changwaiyingyangzhijiList"]
+    if "chufang_baogaoqianziquanList" in rst_term:
+        rst['chufang_baogaoqianziquanList'] = rst_term["chufang_baogaoqianziquanList"]
+    if "chufang_pizhijisuleiyaowuList" in rst_term:
+        rst['chufang_pizhijisuleiyaowuList'] = rst_term["chufang_pizhijisuleiyaowuList"]
+    if "chufang_putongchufangquanList" in rst_term:
+        rst['chufang_putongchufangquanList'] = rst_term["chufang_putongchufangquanList"]
+    if "chufang_shengwuyuxueyezhijiList" in rst_term:
+        rst['chufang_shengwuyuxueyezhijiList'] = rst_term["chufang_shengwuyuxueyezhijiList"]
+    if "chufang_shouquanList" in rst_term:
+        rst['chufang_shouquanList'] = rst_term["chufang_shouquanList"]
     # if request.POST.get("password"):
     #     rst['password'] = request.POST.get("password")
     # if request.POST.get("permission_id"):
@@ -219,6 +274,31 @@ def query_doctorinfo(request):
     if "prescription_Biological_and_blood_preparations" in rst_term:
         rst['prescription_Biological_and_blood_preparations'] = rst_term[
             "prescription_Biological_and_blood_preparations"]
+    # 肠外营养制剂
+    if "changwaiyingyangzhiji" in rst_term:
+        rst['changwaiyingyangzhiji'] = rst_term["changwaiyingyangzhiji"]
+    # 急诊用血
+    if "jizhenyongxue" in rst_term:
+        rst['jizhenyongxue'] = rst_term["jizhenyongxue"]
+    # 平诊用血
+    if "pingzhenyongxue" in rst_term:
+        rst['pingzhenyongxue'] = rst_term["pingzhenyongxue"]
+    # 用血量小于800
+    if "yongxueliangxiaoyu800" in rst_term:
+        rst['yongxueliangxiaoyu800'] = rst_term["yongxueliangxiaoyu800"]
+    # 用血量小于1600
+    if "yongxueliangxiaoyu1600" in rst_term:
+        rst['yongxueliangxiaoyu1600'] = rst_term["yongxueliangxiaoyu1600"]
+    # 检验报告
+    if "jianyanbaogao" in rst_term:
+        rst['jianyanbaogao'] = rst_term["jianyanbaogao"]
+    # 检查报告
+    if "jianchabaogao" in rst_term:
+        rst['jianchabaogao'] = rst_term["jianchabaogao"]
+    # 输血检验报告
+    if "shuxuejianyanbaogao" in rst_term:
+        rst['shuxuejianyanbaogao'] = rst_term["shuxuejianyanbaogao"]
+
     if "depart_id" in rst_term:
         rst['depart_id'] = rst_term["depart_id"]
     # if "id" in rst_term:
@@ -262,6 +342,7 @@ class UserLogin(View):
             # 'superAdmin': user_obj.superAdmin,
             # 'permission_name': user_obj.permission.name,
             'permission_type': depart_obj.permission_type,
+            'depart_id': depart_obj.id
 
         }
         if True:
@@ -325,6 +406,9 @@ class UserList(View):
             rst['pageStart'] = request.GET['pageStart']
         if request.GET.get('pagesize'):
             rst['pagesize'] = request.GET['pagesize']
+        if request.GET.get('depart_id'):
+            typerst['search_type'] = 'depart__id'
+            typerst['search'] = int(request.GET.get('depart_id'))
         # data_array = json.loads(serializers.serialize("json", userList(rst)))
         depart_obj = token_get(request)
         if int(depart_obj.permission_type) == 2:
@@ -417,6 +501,50 @@ class UserAdd(View):
             for item in rst["NewTechAwardList"]:
                 item['doctor_id'] = doctor_id
                 insertNewTechAward(item)
+        if "shoushuzizhiList" in rst:
+            for item in rst["shoushuzizhiList"]:
+                item['doctor_id'] = doctor_id
+                insert_shoushuzizhi(item)
+        if "chufang_shengwuyuxueyezhijiList" in rst:
+            for item in rst["chufang_shengwuyuxueyezhijiList"]:
+                item['doctor_id'] = doctor_id
+                insert_chufang_shengwuyuxueyezhiji(item)
+        if "chufang_putongchufangquanList" in rst:
+            for item in rst["chufang_putongchufangquanList"]:
+                item['doctor_id'] = doctor_id
+                insert_chufang_putongchufangquan(item)
+        if "chufang_pizhijisuleiyaowuList" in rst:
+            for item in rst["chufang_pizhijisuleiyaowuList"]:
+                item['doctor_id'] = doctor_id
+                insert_chufang_pizhijisuleiyaowu(item)
+        if "chufang_baogaoqianziquanList" in rst:
+            for item in rst["chufang_baogaoqianziquanList"]:
+                item['doctor_id'] = doctor_id
+                insert_chufang_baogaoqianziquan(item)
+        if "chufang_yongxuezizhiList" in rst:
+            for item in rst["chufang_yongxuezizhiList"]:
+                item['doctor_id'] = doctor_id
+                insert_chufang_yongxuezizhi(item)
+        if "chufang_kangzhongliuList" in rst:
+            for item in rst["chufang_kangzhongliuList"]:
+                item['doctor_id'] = doctor_id
+                insert_chufang_kangzhongliu(item)
+        if "chufang_mazuijingshenList" in rst:
+            for item in rst["chufang_mazuijingshenList"]:
+                item['doctor_id'] = doctor_id
+                insert_chufang_mazuijingshen(item)
+        if "chufang_kangjunyaowuList" in rst:
+            for item in rst["chufang_kangjunyaowuList"]:
+                item['doctor_id'] = doctor_id
+                insert_chufang_kangjunyaowu(item)
+        if "chufang_changwaiyingyangzhijiList" in rst:
+            for item in rst["chufang_changwaiyingyangzhijiList"]:
+                item['doctor_id'] = doctor_id
+                insert_chufang_changwaiyingyangzhiji(item)
+        if "chufang_shouquanList" in rst:
+            for item in rst["chufang_shouquanList"]:
+                item['doctor_id'] = doctor_id
+                insert_chufang_shouquan(item)
         return JsonResponse({
             'message': 'success',
             'code': 20000,
@@ -510,6 +638,72 @@ class UserEdit(View):
                     del item['doctor']
                 item['doctor_id'] = doctor_id
                 insertNewTechAward(item)
+        if "shoushuzizhiList" in rst:
+            for item in rst["shoushuzizhiList"]:
+                if "doctor" in item:
+                    del item['doctor']
+                item['doctor_id'] = doctor_id
+                insert_shoushuzizhi(item)
+        if "chufang_shengwuyuxueyezhijiList" in rst:
+            for item in rst["chufang_shengwuyuxueyezhijiList"]:
+                if "doctor" in item:
+                    del item['doctor']
+                item['doctor_id'] = doctor_id
+                insert_chufang_shengwuyuxueyezhiji(item)
+        if "chufang_putongchufangquanList" in rst:
+            for item in rst["chufang_putongchufangquanList"]:
+                if "doctor" in item:
+                    del item['doctor']
+                item['doctor_id'] = doctor_id
+                insert_chufang_putongchufangquan(item)
+        if "chufang_pizhijisuleiyaowuList" in rst:
+            for item in rst["chufang_pizhijisuleiyaowuList"]:
+                if "doctor" in item:
+                    del item['doctor']
+                item['doctor_id'] = doctor_id
+                insert_chufang_pizhijisuleiyaowu(item)
+        if "chufang_baogaoqianziquanList" in rst:
+            for item in rst["chufang_baogaoqianziquanList"]:
+                if "doctor" in item:
+                    del item['doctor']
+                item['doctor_id'] = doctor_id
+                insert_chufang_baogaoqianziquan(item)
+        if "chufang_yongxuezizhiList" in rst:
+            for item in rst["chufang_yongxuezizhiList"]:
+                if "doctor" in item:
+                    del item['doctor']
+                item['doctor_id'] = doctor_id
+                insert_chufang_yongxuezizhi(item)
+        if "chufang_kangzhongliuList" in rst:
+            for item in rst["chufang_kangzhongliuList"]:
+                if "doctor" in item:
+                    del item['doctor']
+                item['doctor_id'] = doctor_id
+                insert_chufang_kangzhongliu(item)
+        if "chufang_mazuijingshenList" in rst:
+            for item in rst["chufang_mazuijingshenList"]:
+                if "doctor" in item:
+                    del item['doctor']
+                item['doctor_id'] = doctor_id
+                insert_chufang_mazuijingshen(item)
+        if "chufang_kangjunyaowuList" in rst:
+            for item in rst["chufang_kangjunyaowuList"]:
+                if "doctor" in item:
+                    del item['doctor']
+                item['doctor_id'] = doctor_id
+                insert_chufang_kangjunyaowu(item)
+        if "chufang_changwaiyingyangzhijiList" in rst:
+            for item in rst["chufang_changwaiyingyangzhijiList"]:
+                if "doctor" in item:
+                    del item['doctor']
+                item['doctor_id'] = doctor_id
+                insert_chufang_changwaiyingyangzhiji(item)
+        if "chufang_shouquanList" in rst:
+            for item in rst["chufang_shouquanList"]:
+                if "doctor" in item:
+                    del item['doctor']
+                item['doctor_id'] = doctor_id
+                insert_chufang_shouquan(item)
         return JsonResponse({
             'message': 'success',
             'code': 20000,
@@ -523,11 +717,26 @@ class UserDelete(View):
 
     def post(self, request):
         # data = json.loads(request.body.decode('utf-8'))
-        uid = request.POST.get("id")
+        rst_term = json.loads(request.body.decode())
+        if rst_term['id']:
+            uid = rst_term['id']
+        else:
+            return JsonResponse({
+                'message': 'fail',
+                'code': 20000,
+                'data': '参数没有需要删除用户id'
+            }, safe=False)
         user_obj = userInfo({
-            'id': request.GET.get('id'),
+            'id': uid,
         })
         depart_obj = token_get(request)
+        print('depart_obj.permission_type)')
+        print(depart_obj.permission_type)
+        print('depart_obj.id ')
+        print(depart_obj.id )
+        print('uid')
+        print(uid)
+        # print(user_obj.depart_id)
         if int(depart_obj.permission_type) != 1 and depart_obj.id != int(user_obj.depart_id):
             return JsonResponse({
                 'message': 'fail',
@@ -615,6 +824,14 @@ class UserDetails(View):
                 'prescription_Corticosteroids_Short_glucocorticoid': user_obj.prescription_Corticosteroids_Short_glucocorticoid,
                 'prescription_Corticosteroids_Long_glucocorticoid': user_obj.prescription_Corticosteroids_Long_glucocorticoid,
                 'prescription_Biological_and_blood_preparations': user_obj.prescription_Biological_and_blood_preparations,
+                'changwaiyingyangzhiji': user_obj.changwaiyingyangzhiji,
+                'jizhenyongxue': user_obj.jizhenyongxue,
+                'pingzhenyongxue': user_obj.pingzhenyongxue,
+                'yongxueliangxiaoyu800': user_obj.yongxueliangxiaoyu800,
+                'yongxueliangxiaoyu1600': user_obj.yongxueliangxiaoyu1600,
+                'jianyanbaogao': user_obj.jianyanbaogao,
+                'jianchabaogao': user_obj.jianchabaogao,
+                'shuxuejianyanbaogao': user_obj.shuxuejianyanbaogao,
                 'depart_id': user_obj.depart.id,
                 'depart_name': user_obj.depart.title,
                 'NewTechAwardList': database_to_list(json.loads(serializers.serialize("json", newTechAwardList(rst)))),
@@ -632,6 +849,17 @@ class UserDetails(View):
                 'ResearchPapersList': database_to_list(
                     json.loads(serializers.serialize("json", researchPapersList(rst)))),
                 'StudyTableList': database_to_list(json.loads(serializers.serialize("json", studyTableList(rst)))),
+                'shoushuzizhiList': database_to_list(json.loads(serializers.serialize("json", list_shoushuzizhi(rst)))),
+                'chufang_yongxuezizhiList': database_to_list(json.loads(serializers.serialize("json", list_chufang_yongxuezizhi(rst)))),
+                'chufang_kangjunyaowuList': database_to_list(json.loads(serializers.serialize("json", list_chufang_kangjunyaowu(rst)))),
+                'chufang_kangzhongliuList': database_to_list(json.loads(serializers.serialize("json", list_chufang_kangzhongliu(rst)))),
+                'chufang_mazuijingshenList': database_to_list(json.loads(serializers.serialize("json", list_chufang_mazuijingshen(rst)))),
+                'chufang_changwaiyingyangzhijiList': database_to_list(json.loads(serializers.serialize("json", list_chufang_changwaiyingyangzhiji(rst)))),
+                'chufang_baogaoqianziquanList': database_to_list(json.loads(serializers.serialize("json", list_chufang_baogaoqianziquan(rst)))),
+                'chufang_pizhijisuleiyaowuList': database_to_list(json.loads(serializers.serialize("json", list_chufang_pizhijisuleiyaowu(rst)))),
+                'chufang_putongchufangquanList': database_to_list(json.loads(serializers.serialize("json", list_chufang_putongchufangquan(rst)))),
+                'chufang_shengwuyuxueyezhijiList': database_to_list(json.loads(serializers.serialize("json", list_chufang_shengwuyuxueyezhiji(rst)))),
+                'chufang_shouquanList': database_to_list(json.loads(serializers.serialize("json", list_chufang_shouquan(rst)))),
             }
         }, safe=False)
 
@@ -694,13 +922,22 @@ class DepartDelete(View):
     def post(self, request):
         # data = json.loads(request.body.decode('utf-8'))
         depart_obj = token_get(request)
+        rst_term = json.loads(request.body.decode())
+        if rst_term['id']:
+            nid = rst_term['id']
+        else:
+            return JsonResponse({
+                'message': 'fail',
+                'code': 20000,
+                'data': '参数没有需要删除用户id'
+            }, safe=False)
         if int(depart_obj.permission_type) != 1:
             return JsonResponse({
                 'message': 'fail',
                 'code': 20000,
                 'data': '你没有该操作权限'
             }, safe=False)
-        nid = request.POST.get("id")
+        # nid = request.POST.get("id")
         deleteDepart(nid)
         return JsonResponse({
             'message': 'success',
@@ -811,7 +1048,7 @@ class UploadImg(View):
                 'message': 'success',
                 'code': 20000,
                 'data': {
-                    'imgurl': 'http://192.168.250.190/DoctorRecordsServerApp/media/img/' + file.name,
+                    'imgurl': 'http://192.168.214.151/DoctorRecordsServerApp/media/img/' + file.name,
                 }
             }
         except:
