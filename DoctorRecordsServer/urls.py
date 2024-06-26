@@ -9,11 +9,6 @@ from django.conf import settings
 from django.conf.urls.static import static
 urlpatterns = [
     path("admin/", admin.site.urls),
-    # path("amniocentesisAppoint/", include(("amniocentesisAppoint.urls", "amniocentesisAppoint"),
-    #                                       namespace="amniocentesisAppoint")),
-    # path("multidisciplinaryConsultation/", include(("multidisciplinaryConsultation.urls",
-    #                                                 "multidisciplinaryConsultation"),
-    #                                                namespace="multidisciplinaryConsultation")),
-    # path("addPatient/", include(("addPatient.urls", "addPatient"), namespace="addPatient")),
     path("DoctorRecordsServerApp/", include(("DoctorRecordsServerApp.urls", "DoctorRecordsServerApp"), namespace="DoctorRecordsServerApp")),
+    path("mz_queue/", include(("QueuingrRegistrationApp.urls", "QueuingrRegistrationApp"), namespace="QueuingrRegistrationApp")),
 ]

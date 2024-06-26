@@ -175,8 +175,8 @@ class ObtainPatents(models.Model):
 
 class NewTechResearch(models.Model):
     # 新技术开展情况
-    approved_time = models.DateField(verbose_name="获取开展时间")
-    to_nomal_time = models.DateField(verbose_name="转常规技术开展时间")
+    approved_time = models.CharField(verbose_name="获取开展时间", max_length=1024)
+    to_nomal_time = models.CharField(verbose_name="转常规技术开展时间", max_length=1024)
     name = models.CharField(verbose_name="项目名称", max_length=1024)
     # 关联医生
     doctor = models.ForeignKey(verbose_name="医生档案主表", to="DoctorInfo", to_field="id", on_delete=models.CASCADE)

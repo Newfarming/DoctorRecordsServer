@@ -44,7 +44,6 @@ CORS_ALLOW_HEADERS = (
     'sec-ch-ua-mobile',
     'sec-ch-ua-platform',
     'User-Agent'
-
 )
 CORS_ALLOW_CREDENTIALS = True
 CORS_ORIGIN_ALLOW_ALL = True
@@ -62,6 +61,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'DoctorRecordsServerApp',
+    'QueuingrRegistrationApp',
     'corsheaders',
     'rest_framework',
 ]
