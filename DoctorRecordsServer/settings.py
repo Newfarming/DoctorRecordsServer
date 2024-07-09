@@ -62,6 +62,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'DoctorRecordsServerApp',
     'QueuingrRegistrationApp',
+    'MedInsNoPaperApp',
     'corsheaders',
     'rest_framework',
 ]
